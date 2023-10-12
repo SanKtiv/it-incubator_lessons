@@ -1,1 +1,0 @@
-# it-incubator_lessons
