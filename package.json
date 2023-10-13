@@ -25,6 +25,6 @@
     "watch": "tsc -w",
     "build": "tsc",
     "start": "node dist/index.js",
-    "jest": "jest -i" //OR "jest": "jest --runInBand"
+    "jest": "jest -i"
   }
 }
