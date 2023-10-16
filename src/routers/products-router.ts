@@ -37,10 +37,42 @@ productsRouter.get('/api/videos', (req: Request, res: Response) => {
 
 videosRouter.get('/videos', (req: Request, res: Response) => {
     const videos = videosRepository.getVideo()
-    res.send(videos)
+    res.status(200).send(videos)
 })
 
 videosRouter.post('/videos', (req: Request, res: Response) => {
-    const videos = videosRepository.createVideo(req.body.title, req.body.author, req.body.availableResolutions)
-    res.status(201).send(videos)
+
+        const videos = videosRepository.createVideo(req.body.title, req.body.author, req.body.availableResolutions)
+
+        if (videos) {
+            res.status(201).send(videos)
+        } else {
+            res.status(400).send(videos)
+        }
+
+})
+
+videosRouter.get('/videos/:videoId', (req: Request, res: Response) => {
+
+    const videos = videosRepository.getVideoId(req.params.videoId)
+
+    if (videos) {
+        res.status(200).send(videos)
+    } else {
+        res.sendStatus(404)
+    }
+})
+
+videosRouter.put('/videos/:videoId', (req: Request, res: Response) => {
+
+    const videos = videosRepository.updateVideo(req.params.videoId, req.body)
+
+    switch (videos) {
+        case 204: res.sendStatus(204)
+            break
+        case 404: res.sendStatus(404)
+            break
+        default: res.status(400).send(videos)
+            break
+    }
 })
