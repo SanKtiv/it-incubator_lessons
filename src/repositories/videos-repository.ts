@@ -33,7 +33,7 @@ const defaultVideo: VideoType = {
 const resolutionsTrue: Array<string> = [ 'P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2160' ]
 
 export const resolutionsFalse = (resolutions: Array<string> | null) => {
-    return resolutions !== null && resolutionsTrue.indexOf(resolutions[0]) === -1? true : false;
+    return resolutions !== null && resolutionsTrue.indexOf(resolutions[0]) === -1 && resolutions.length > 1? true : false;
 }
 
 const listOfVideos: VideoType[] = [defaultVideo] // Database of Videos
