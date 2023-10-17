@@ -34,21 +34,25 @@ videosRouter.get('/videos/:videoId', (req: Request, res: Response) => {
         res.sendStatus(404)
     }
 })
-
+type ErrorType = { message: string, field: string }
 videosRouter.post('/videos', (req: Request, res: Response) => {
+    const err: { errorsMessages: ErrorType[] } = {
+        errorsMessages: []
+    }
     const title = req.body.title
     if (typeof title !== 'string' || !title.trim() || title.length > 40) {
-        res.status(400).send(error('title'))
-        return
+        err.errorsMessages.push(error('title'))
     }
     const author = req.body.author
     if (typeof author !== 'string' || !author.trim() || author.length > 20) {
-        res.status(400).send(error('author'))
-        return
+        err.errorsMessages.push(error('author'))
     }
     const availableResolutions = req.body.availableResolutions
     if (resolutionsFalse(availableResolutions)) {
-        res.status(400).send(error('availableResolutions'))
+        err.errorsMessages.push(error('availableResolutions'))
+    }
+    if (err.errorsMessages.length) {
+        res.status(400).send(err)
         return
     }
     const videos = videosRepository.createVideo(title, author, availableResolutions)
@@ -56,42 +60,41 @@ videosRouter.post('/videos', (req: Request, res: Response) => {
 })
 
 videosRouter.put('/videos/:videoId', (req: Request, res: Response) => {
+    const err: { errorsMessages: ErrorType[] } = {
+        errorsMessages: []
+    }
     const videoId = req.params.videoId
     if (!/^\d+$/.test(videoId)) {
-        res.status(400).send(error('videoId'))
-        return
+        err.errorsMessages.push(error('id'))
     }
     const title = req.body.title
     if (typeof title !== 'string' || !title.trim() || title.length > 40) {
-        res.status(400).send(error('title'))
-        return
+        err.errorsMessages.push(error('title'))
     }
     const author = req.body.author
     if (typeof author !== 'string' || !author.trim() || author.length > 20) {
-        res.status(400).send(error('author'))
-        return
+        err.errorsMessages.push(error('author'))
     }
     const availableResolutions = req.body.availableResolutions
     if (resolutionsFalse(availableResolutions)) {
-        res.status(400).send(error('availableResolutions'))
-        return
+        err.errorsMessages.push(error('availableResolutions'))
     }
     const canBeDownloaded = req.body.canBeDownloaded
     if (typeof canBeDownloaded !== "boolean") {
-        res.status(400).send(error('canBeDownloaded'))
-        return
+        err.errorsMessages.push(error('canBeDownloaded'))
     }
     const minAgeRestriction = req.body.minAgeRestriction
     if ( minAgeRestriction > 18 || minAgeRestriction < 1 || typeof minAgeRestriction === 'string') {
-        res.status(400).send(error('minAgeRestriction'))
-        return
+        err.errorsMessages.push(error('minAgeRestriction'))
     }
     const publicationDate = req.body.publicationDate
     if (typeof publicationDate !== 'string' || !publicationDate.trim()) {
-        res.status(400).send(error('publicationDate'))
-        return
+        err.errorsMessages.push(error('publicationDate'))
     }
-
+    if (err.errorsMessages.length) {
+        res.status(400).send(err)
+        return;
+    }
     const status = videosRepository.updateVideo(req.params.videoId, req.body)
     res.sendStatus(status)
 

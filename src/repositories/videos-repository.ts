@@ -1,5 +1,3 @@
-import e from "express";
-
 type VideoType = {
     id: number,
     title: string,
@@ -11,24 +9,17 @@ type VideoType = {
     availableResolutions: Array<string> | null
 }
 
-type ErrorType = {
-    errorsMessages: [{message: string, field: string}]
+type ErrorType = {message: string, field: string}
+// const err: { errorsMessages: ErrorType[] } = {
+//     errorsMessages: []
+//}
+export const error = (mess: string) => {
+     return  {message: `Wrong ${mess}`, field: mess}
 }
 
-export const error = (mess: string): ErrorType => {
-    return {
-        errorsMessages: [{message: `Wrong ${mess}`, field: mess}]
-    }
-}
-
-type DataForUpdateVideo = {
-    title: string,
-    author: string,
-    canBeDownloaded: boolean,
-    minAgeRestriction: null | number,
-    publicationDate: string,
-    availableResolutions: Array<string> | null
-}
+// export const errors = (error: ErrorType[], mess: string) => {
+//     error.push({message: `Wrong ${mess}`, field: mess})
+// }
 
 let dateNow = new Date
 let dateNowAndDay = new Date
@@ -50,10 +41,6 @@ const resolutionsTrue: Array<string> = [ 'P144', 'P240', 'P360', 'P480', 'P720',
 
 export const resolutionsFalse = (resolutions: Array<string> | null) => {
     return resolutions !== null && resolutionsTrue.indexOf(resolutions[0]) === -1? true : false;
-}
-
-const errorMes: ErrorType = {
-    errorsMessages: [{message: 'string', field: 'string'}]
 }
 
 const listOfVideos: VideoType[] = [defaultVideo] // Database of Videos
