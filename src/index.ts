@@ -1,5 +1,5 @@
 import express, {Request, Response} from 'express'
-import {productsRouter, videosRouter} from './routers/products-router';
+import {videosRouter} from './routers/video-router';
 
 const app = express()
 const port = process.env.PORT || 5000
@@ -11,8 +11,6 @@ app.get('/', (req: Request, res: Response) => {
     res.send('HI SAMURAI')
 })
 
-
-app.use('/products', productsRouter)
 app.use('/', videosRouter)
 
 app.listen(port, () => {
