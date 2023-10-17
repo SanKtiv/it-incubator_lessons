@@ -9,17 +9,10 @@ type VideoType = {
     availableResolutions: Array<string> | null
 }
 
-type ErrorType = {message: string, field: string}
-// const err: { errorsMessages: ErrorType[] } = {
-//     errorsMessages: []
-//}
 export const error = (mess: string) => {
      return  {message: `Wrong ${mess}`, field: mess}
 }
 
-// export const errors = (error: ErrorType[], mess: string) => {
-//     error.push({message: `Wrong ${mess}`, field: mess})
-// }
 
 let dateNow = new Date
 let dateNowAndDay = new Date
@@ -28,8 +21,8 @@ dateNowAndDay.setDate(dateNowAndDay.getDate() + 1)
 
 const defaultVideo: VideoType = {
     id: 1,
-    title: 'Zero',
-    author: 'Zerovich',
+    title: 'Great Video',
+    author: 'Name',
     canBeDownloaded: false,
     minAgeRestriction: null,
     createdAt: dateNow.toISOString(),
@@ -52,10 +45,10 @@ export const videosRepository = {
     },
 
     deleteVideoId(videoId: string): number {
-        const findedVideo = listOfVideos.find(v => v.id === +videoId)
-        if (findedVideo) {
-            const indexOfDelleteVideo = listOfVideos.indexOf(findedVideo)
-            listOfVideos.splice(indexOfDelleteVideo, 1)
+        const foundVideo = listOfVideos.find(v => v.id === +videoId)
+        if (foundVideo) {
+            const indexOfDeleteVideo = listOfVideos.indexOf(foundVideo)
+            listOfVideos.splice(indexOfDeleteVideo, 1)
             return 204
         } else {
             return 404
@@ -86,8 +79,8 @@ export const videosRepository = {
     },
 
     updateVideo(videoId: string, dataUpdate: any): number {
-        const findedVideo = listOfVideos.find(v => v.id === +videoId)
-        if (findedVideo) {
+        const foundVideo = listOfVideos.find(v => v.id === +videoId)
+        if (foundVideo) {
             listOfVideos.forEach(v => {
                 if (v.id === +videoId) {
                     v.title = dataUpdate.title
